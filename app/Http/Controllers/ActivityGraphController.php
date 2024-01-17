@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Routing\Controller;
 
 include(base_path() .'/vendor/mitoteam/jpgraph/src/lib/jpgraph.php');
@@ -16,7 +17,7 @@ class ActivityGraphController extends Controller {
 
         $osuStats = [
             1, 1, 1, 1, 2, 2, 2, 2, 2, 3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,6,
-            2, 2, 2, 2, 2, 2, 2, 3, 3, 3,3,7,7,7,7,7,7,5,5,5,5,5,3,3,3,3,3,3,3,3,
+            2, 2, 2, 2, 12, 2, 2, 3, 3, 3,3,7,7,7,7,7,7,5,5,5,5,5,3,3,3,3,3,3,3,3,
             2,12,12,12,12,12,12,12,11,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
         ];
 
@@ -42,7 +43,12 @@ class ActivityGraphController extends Controller {
         $statsGraph->xaxis->HideLabels();
         $statsGraph->yaxis->HideLabels();
 
-        $statsGraph->Stroke('activity-graph.png');
+        //This try catch is a hotfix for windows
+        try {
+            $statsGraph->Stroke('activity-graph-temp.png');
+
+            copy('activity-graph-temp.png', 'activity-graph.png');
+        }catch (Exception $e) {}
 
         return response()->file('activity-graph.png');
     }

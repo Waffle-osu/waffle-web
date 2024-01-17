@@ -20,10 +20,36 @@
 
                     (Furball)</div>
                 <hr>
-                <div class="news-text">
-                    Waffle is finally released! (absolute lie, impossible)
+                <div class="news-text" style="margin-bottom: -2px">
+                    Waffle is finally released! (absolute lie, impossible) <br/>
+                    Experts believe Waffle may release very late this decade...
+                </div>
+
+                <div class="link-container" style="text-align: right">
+                    <a href="/news/1" class="news-link">Read More / Comment...</a>
                 </div>
             </div>
+
+            <br/>
+
+            <div class="announcement">
+                <div style="font-size: 14px">
+                    17.01.2024
+                    <b style="color: rgb(127,48,38); display: inline">Waffle Development Progress</b>
+
+                    (Furball)</div>
+                <hr>
+                <div class="news-text" style="margin-bottom: -2px">
+                    Beatmap Submission System fully working! <br/>
+                    Website making very fast progress..
+                </div>
+
+                <div class="link-container" style="text-align: right">
+                    <a href="/news/1" class="news-link">Read More / Comment...</a>
+                </div>
+            </div>
+
+            <br/>
         </div>
         <div class="online-user-stats">
             <p class="heading-text" style="display: inline">Online users</p>
@@ -46,7 +72,7 @@
                                 </tr>
                             @else
                                 <tr class="dark-row">
-                                    <td class="chat-time">{{ date('h:i', strtotime($messages[$i]->date)) }}</td>
+                                    <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
                                     <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
                                 </tr>
                             @endif
@@ -57,9 +83,13 @@
         </div>
     </div>
     <div class="right-side">
-        <a href="/download"><p>Download</p></a>
-        <a href="/download"><p>Support</p></a>
-        <a href="/download"><p>Discord</p></a>
+        <div class="button-container" style="text-align: center">
+            <a href="/download"><img height="60" style="margin-bottom: 2px" src="assets/button-download.png" alt="Download"/></a>
+            <a href="/discord"><img height="60" style="text-align: center" src="assets/button-join.png" alt="Join the Discord"/></a>
+            <a href="/contribute"><img height="60" style="text-align: center" src="assets/button-contribute.png" alt="Contribute"/></a>
+        </div>
+
+        <br/>
 
         <p class="heading-text" style="display: inline">Featured Video</p>
         <br/>

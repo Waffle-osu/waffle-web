@@ -18,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 public/activity-graph.png
+public/activity-graph-temp.png

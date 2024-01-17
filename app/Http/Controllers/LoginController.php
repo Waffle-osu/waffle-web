@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use http\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades;
 
 class LoginController extends Controller {
     public function authenticate(Request $request) {
@@ -14,18 +17,16 @@ class LoginController extends Controller {
             "password" => ["required"],
         ]);
 
-        $user = User::where('username', $passedCredentials['username'])->first();
+        $internalResponse = Http::post(env("WAFFLE_BANCHO_WEB_URL") . "/internal/do-auth", $passedCredentials);
 
-        if($user === null) {
-            return response()->redirectTo('/login/failed?reason=nf');
+        if($internalResponse->serverError()) {
+            return redirect('/login/invalid?r=s');
+        } else if($internalResponse->successful()) {
+            $cookie = Facades\Cookie::make("token", $internalResponse->body());
+
+            return redirect('/')->withCookie($cookie);
+        } else {
+            return redirect('/login/invalid');
         }
-
-        if(!Hash::check($passedCredentials['password'], $user->password, [
-            'rounds' => 10
-        ])) {
-            return response()->redirectTo('/login/failed?reason=wp');
-        }
-
-        return 'hiii';
     }
 }
