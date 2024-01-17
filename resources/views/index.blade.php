@@ -39,14 +39,19 @@
             <div class="chat">
                 <table style="width: 100%; border: 1px; border-radius: 3px">
                     <tbody>
-                        <tr class="light-row">
-                            <td class="chat-time">21:59</td>
-                            <td class="chat-msg">&lt;Furball&gt;: Hi!</td>
-                        </tr>
-                        <tr class="dark-row">
-                            <td class="chat-time">21:59</td>
-                            <td class="chat-msg">&lt;Furball&gt;: H!!!i!</td>
-                        </tr>
+                        @for ($i = 0; $i < count($messages); $i++)
+                            @if($i % 2 == 0)
+                                <tr class="light-row">
+                                    <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
+                                </tr>
+                            @else
+                                <tr class="dark-row">
+                                    <td class="chat-time">{{ date('h:i', strtotime($messages[$i]->date)) }}</td>
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
+                                </tr>
+                            @endif
+                        @endfor
                     </tbody>
                 </table>
             </div>
