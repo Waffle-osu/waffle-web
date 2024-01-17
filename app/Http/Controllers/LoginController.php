@@ -22,7 +22,7 @@ class LoginController extends Controller {
         if($internalResponse->serverError()) {
             return redirect('/login/invalid?r=s');
         } else if($internalResponse->successful()) {
-            $cookie = Facades\Cookie::make("token", $internalResponse->body());
+            $cookie = Facades\Cookie::make("ww-login-token", $internalResponse->body());
 
             return redirect('/')->withCookie($cookie);
         } else {
