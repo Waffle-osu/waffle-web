@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 include(base_path() .'/vendor/mitoteam/jpgraph/src/lib/jpgraph.php');
 include(base_path() .'/vendor/mitoteam/jpgraph/src/lib/jpgraph_line.php');
 
-class ActityGraphController extends Controller {
+class ActivityGraphController extends Controller {
     public function show() {
         $maxCountUsers = 12;
         $graphTop = $maxCountUsers * 1.1;

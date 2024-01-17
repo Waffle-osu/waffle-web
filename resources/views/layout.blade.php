@@ -81,12 +81,14 @@
                 </div>
                 <div class="login-container">
 
-                    <form class="search-form">
+                    <form class="search-form" action="/login" method="post">
+                        @csrf
+
                         <b class="nav-login" style="font-size: 9pt; line-height: 16px">user: </b>
                         <input style="height: 12px" class="nav-search" type="text" id="login-username" name="username" autocomplete="off">
 
                         <b class="nav-login" style="font-size: 9pt; line-height: 16px">pass: </b>
-                        <input style="height: 12px" class="nav-search" type="text" id="login-password" name="password" autocomplete="off">
+                        <input style="height: 12px" class="nav-search" type="password" id="login-password" name="password" autocomplete="off">
 
                         <a href="/login/forgot" style="color: #ad2a2a; text-decoration: none">? </a>
                         &nbsp;
