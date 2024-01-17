@@ -1,28 +1,59 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layout')
 
-        <title>osu!Waffle</title>
+@section('title', 'Main Page')
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+@section('additional-head')
+    <meta property="og:image" content="/*link here*/">
+    <meta property="og:title" content="osu!Waffle">
+    <meta property="og:description" content="osu!Waffle is a server for old versions of osu!">
+@endsection
 
-        <!-- Styles -->
-        <style>
-            body {
-                font-family: Figtree, serif;
-            }
+@section('content')
+    <div class="left-side">
+        <div class="announcements">
+            <p class="heading-text">Announcements</p>
+            <br/>
+            <div class="announcement">
+                <div style="font-size: 14px">
+                    01.03.2024
+                    <b style="color: rgb(127,48,38); display: inline">Waffle is released!</b>
 
-            .antialiased {
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale
-            }
-        </style>
-    </head>
-    <body class="antialiased">
-        Hi!
-    </body>
-</html>
+                    (Furball)</div>
+                <hr>
+                <div class="news-text">
+                    Waffle is finally released! (absolute lie, impossible)
+                </div>
+            </div>
+        </div>
+        <div class="online-user-stats">
+            <p class="heading-text" style="display: inline">Online users</p>
+            <p class="heading-text" style="display: inline; font-size: 8pt">over the last 24 hours</p>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        <div class="irc-log">
+            <p class="heading-text" style="display: inline">Game Chat</p>
+
+            <div class="chat">
+                <table style="width: 100%; border: 1px; border-radius: 3px">
+                    <tbody>
+                        <tr class="light-row">
+                            <td class="chat-time">21:59</td>
+                            <td class="chat-msg">&lt;Furball&gt;: Hi!</td>
+                        </tr>
+                        <tr class="dark-row">
+                            <td class="chat-time">21:59</td>
+                            <td class="chat-msg">&lt;Furball&gt;: H!!!i!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="right-side">
+
+    </div>
+
+@endsection
