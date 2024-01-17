@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="left-side">
+    <div class="left-side" style="width: 100%">
         <div class="announcements">
             <p class="heading-text">Announcements</p>
             <br/>
@@ -28,10 +28,9 @@
         <div class="online-user-stats">
             <p class="heading-text" style="display: inline">Online users</p>
             <p class="heading-text" style="display: inline; font-size: 8pt">over the last 24 hours</p>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+            <div class="activity-graph" style="margin: auto; width: 100%; text-align: right">
+                <img src="/stats/activity-graph"/>
+            </div>
         </div>
         <div class="irc-log">
             <p class="heading-text" style="display: inline">Game Chat</p>
@@ -58,7 +57,16 @@
         </div>
     </div>
     <div class="right-side">
+        <a href="/download"><p>Download</p></a>
+        <a href="/download"><p>Support</p></a>
+        <a href="/download"><p>Discord</p></a>
 
-    </div>
+        <p class="heading-text" style="display: inline">Featured Video</p>
+        <br/>
+        <br/>
+        <a href="https://www.youtube.com/watch?v=VsutC3vm0Ec">
+            <img src="featured-vid.jpg" width="420" height="240"/>
+        </a>
+     </div>
 
 @endsection
