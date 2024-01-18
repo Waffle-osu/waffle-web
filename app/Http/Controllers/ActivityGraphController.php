@@ -10,13 +10,13 @@ include(base_path() .'/vendor/mitoteam/jpgraph/src/lib/jpgraph_line.php');
 
 class ActivityGraphController extends Controller {
     public function show() {
-        $maxCountUsers = 12;
+        $maxCountUsers = 13;
         $graphTop = $maxCountUsers * 1.1;
 
         $statsGraph = new \Graph(400, 60);
 
         $osuStats = [
-            1, 1, 1, 1, 2, 2, 2, 2, 2, 3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,6,
+            1, 1, 1, 1, 2, 2, 2, 2, 2, 3,3,3,3,3,3,6,3,3,6,3,3,3,13,13,12,11,10,5,4,6,
             2, 2, 2, 2, 12, 2, 2, 3, 3, 3,3,7,7,7,7,7,7,5,5,5,5,5,3,3,3,3,3,3,3,3,
             2,12,12,12,12,12,12,12,11,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
         ];

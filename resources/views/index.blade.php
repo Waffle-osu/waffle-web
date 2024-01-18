@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="left-side" style="width: 100%">
+    <div class="left-side" style="width: 100%; position: relative">
         <div class="announcements">
             <p class="heading-text">Announcements</p>
             <br/>
@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="link-container" style="text-align: right">
-                    <a href="/news/1" class="news-link">Read More / Comment...</a>
+                    <a href="/news/3" class="news-link">Read More / Comment...</a>
                 </div>
             </div>
 
@@ -45,40 +45,67 @@
                 </div>
 
                 <div class="link-container" style="text-align: right">
-                    <a href="/news/1" class="news-link">Read More / Comment...</a>
+                    <a href="/news/2" class="news-link">Read More / Comment...</a>
                 </div>
             </div>
 
             <br/>
-        </div>
-        <div class="online-user-stats">
-            <p class="heading-text" style="display: inline">Online users</p>
-            <p class="heading-text" style="display: inline; font-size: 8pt">over the last 24 hours</p>
-            <div class="activity-graph" style="margin: auto; width: 100%; text-align: right">
-                <img src="/stats/activity-graph"/>
-            </div>
-        </div>
-        <div class="irc-log">
-            <p class="heading-text" style="display: inline">Game Chat</p>
 
-            <div class="chat">
-                <table style="width: 100%; border: 1px; border-radius: 3px">
-                    <tbody>
+            <div class="previous-annoucements" style="font-size: 8pt">
+                <p style="border-bottom: solid 1px #CF4D37; ">Previous Announcements</p>
+
+                <p style="display: inline">31.12.2023</p>
+                <a style="display: inline" href="/news/1">2023 comes to an end!</a>
+                <p style="display: inline">(Furball)</p>
+
+                <br/>
+
+                <p style="display: inline">26.12.2023</p>
+                <a style="display: inline" href="/news/1">ppv1 planned!</a>
+                <p style="display: inline">(Furball)</p>
+
+                <br/>
+
+                <p style="display: inline">25.12.2023</p>
+                <a style="display: inline" href="/news/1">Multiplayer commands are coming!</a>
+                <p style="display: inline">(Furball)</p>
+
+            </div>
+
+
+            <br/>
+        </div>
+        <div class="put-bottom" style="bottom: 0; position: absolute;">
+            <div class="online-user-stats">
+                <p class="heading-text" style="display: inline">Online users</p>
+                <p class="heading-text" style="display: inline; font-size: 8pt">over the last 24 hours</p>
+                <div class="activity-graph" style="margin: auto; width: 100%; text-align: right">
+                    <img src="/stats/activity-graph"/>
+                </div>
+            </div>
+            <div class="irc-log">
+                <p class="heading-text" style="display: inline">Game Chat</p>
+
+                <div class="chat">
+                    <table style="width: 100%; border: 1px; border-radius: 3px">
+                        <tbody>
                         @for ($i = 0; $i < count($messages); $i++)
-                            @if($i % 2 == 0)
-                                <tr class="light-row">
-                                    <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
-                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
-                                </tr>
-                            @else
-                                <tr class="dark-row">
-                                    <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
-                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
-                                </tr>
-                            @endif
+                            @php
+                                $chatRowClass = "light-row";
+
+                                if($i % 2 != 0) {
+                                    $chatRowClass = "dark-row";
+                                }
+                            @endphp
+
+                            <tr class="{{ $chatRowClass }}">
+                                <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
+                                <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
+                            </tr>
                         @endfor
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

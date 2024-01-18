@@ -126,7 +126,9 @@
                     @yield('content')
                 </div>
             </div>
-
+            <div class="copyright-text" style=" text-align: center; width: 100%">
+                <a href="https://github.com/Eeveelution" style="text-decoration: none; color: black; font-size: 7pt">waffle by furball</a>
+            </div>
         </div>
         <div id="footer">
             <p style="text-align: center; width: 100%; font-size: 7pt">
