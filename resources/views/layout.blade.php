@@ -42,7 +42,7 @@
                     <a href="/download">Beatmaps</a>
 
                     <ul class="nav-dropdown">
-                        <li><a href="/beatmaps/ranked">Ranked</a></li>
+                        <li style="margin-top: -3px"><a href="/beatmaps/ranked">Ranked</a></li>
                         <li><a href="/beatmaps/approved">Approved</a></li>
                         <li><a href="/beatmaps/waffle">Waffle-only</a></li>
                         <li><a href="/beatmaps/packs">Beatmap Packs</a></li>
@@ -52,14 +52,14 @@
                     <a href="/rankings/score">Rankings</a>
 
                     <ul class="nav-dropdown">
-                        <li><a href="/rankings/score">Ranked Score</a></li>
+                        <li style="margin-top: -3px"><a href="/rankings/score">Ranked Score</a></li>
                     </ul>
                 </li>
                 <li class="nav-element nav-element-dropdown">
                     <a href="/download">Community</a>
 
                     <ul class="nav-dropdown">
-                        <li><a href="/community/forums">Forums</a></li>
+                        <li style="margin-top: -3px"><a href="/community/forums">Forums</a></li>
                         <li><a href="/community/discord">Discord</a></li>
                     </ul>
                 </li>
@@ -80,28 +80,44 @@
                     </form>
                 </div>
                 <div class="login-container">
+                    @if($user === null)
+                        <form class="search-form" action="/login" method="post">
+                            @csrf
 
-                    <form class="search-form" action="/login" method="post">
-                        @csrf
+                            <b class="nav-login" style="font-size: 9pt; line-height: 16px">user: </b>
+                            <input style="height: 12px" class="nav-search" type="text" id="login-username" name="username" autocomplete="off">
 
-                        <b class="nav-login" style="font-size: 9pt; line-height: 16px">user: </b>
-                        <input style="height: 12px" class="nav-search" type="text" id="login-username" name="username" autocomplete="off">
+                            <b class="nav-login" style="font-size: 9pt; line-height: 16px">pass: </b>
+                            <input style="height: 12px" class="nav-search" type="password" id="login-password" name="password" autocomplete="off">
 
-                        <b class="nav-login" style="font-size: 9pt; line-height: 16px">pass: </b>
-                        <input style="height: 12px" class="nav-search" type="password" id="login-password" name="password" autocomplete="off">
+                            <a href="/login/forgot" style="color: #ad2a2a; text-decoration: none">? </a>
+                            &nbsp;
+                            <a href="/login/register" style="color: #ad2a2a; text-decoration: none">register</a>
+                            &nbsp;
 
-                        <a href="/login/forgot" style="color: #ad2a2a; text-decoration: none">? </a>
+                            <input type="checkbox" id="save-checkbox">
+                            &nbsp;
+                            <label for="save-checkbox">save</label>
+
+                            &nbsp;
+                            <input style="border-radius: 0; font-size: 9pt" type="submit" name="login" value=" login " tabindex="5">
+                        </form>
+                    @else
+                        <p>Hello,</p>
+                        <a href="{{ "/users/" . $user->user_id }}" style="font-weight: bold">{{ $user->username }}</a>
                         &nbsp;
-                        <a href="/login/register" style="color: #ad2a2a; text-decoration: none">register</a>
-                        &nbsp;
 
-                        <input type="checkbox" id="save-checkbox">
-                        &nbsp;
-                        <label for="save-checkbox">save</label>
+                        <a href="/profile/settings">
+                            <img src="{{ env("AVATAR_PATH") . "/" . $user->user_id }}" height="24" alt="Avatar"/>
+                        </a>
 
-                        &nbsp;
-                        <input style="border-radius: 0; font-size: 9pt" type="submit" name="login" value=" login " tabindex="5">
-                    </form>
+                        |
+                        <a href="/forum/messages">1 unread message</a> |
+                        <a href="/forum/search">Search</a> |
+                        <a href="/profile/settings">Settings</a> |
+                        <a href="/logout">Logout</a> |
+                    @endif
+
                 </div>
             </div>
             <div class="login-dropdown" style="display: none"></div>
@@ -110,7 +126,7 @@
                     @yield('content')
                 </div>
             </div>
-            <div class="gradient"></div>
+
         </div>
         <div id="footer">
             <p style="text-align: center; width: 100%; font-size: 7pt">

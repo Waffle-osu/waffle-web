@@ -14,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
     {
         //Ignore default migration from here
         Sanctum::ignoreMigrations();
+
+        $this->app->singleton('hash', function ($app) {
+            return new \OsuHashManager($app);
+        });
     }
 
     /**

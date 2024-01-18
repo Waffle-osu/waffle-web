@@ -6,6 +6,8 @@ use App\Models\ChatMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class IndexController extends Controller {
@@ -14,9 +16,36 @@ class IndexController extends Controller {
             $q->on('irc_log.sender', '=', 'users.user_id');
         })->orderBy('message_id', 'desc')->take(10)->get()->reverse()->values();
 
+        $user = Auth::user();
+
+        $most_played = DB::select("
+            SELECT
+                plays,
+                beatmapsets.artist,
+                beatmapsets.title,
+                beatmapsets.creator,
+                beatmapsets.beatmapset_id,
+                beatmapsets.creator_id,
+                beatmapsets.creator
+            FROM (
+               SELECT
+                   COUNT(*) AS 'plays',
+                   beatmapset_id
+               FROM
+                   waffle.scores
+               GROUP BY
+                    beatmapset_id
+            ) a
+            LEFT JOIN
+                waffle.beatmapsets ON a.beatmapset_id = beatmapsets.beatmapset_id
+            ORDER BY plays DESC
+            LIMIT 5
+        ");
+
         return view('index', [
-            'user' => json_encode($chat_messages),
+            'user' => $user,
             'messages' => $chat_messages,
+            'most_played' => $most_played,
         ]);
     }
 }

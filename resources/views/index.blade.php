@@ -97,6 +97,52 @@
         <a href="https://www.youtube.com/watch?v=VsutC3vm0Ec">
             <img src="featured-vid.jpg" width="420" height="240"/>
         </a>
+
+        <br/>
+        <br/>
+
+        <p class="heading-text" style="display: inline">Most played Beatmaps</p>
+
+
+        <div class="most-played-table">
+            <table style="width: 100%; border: 1px; border-radius: 3px; font-size: 8pt">
+                <tbody>
+                    <tr>
+                        <td>Plays</td>
+                        <td>Artist / Title</td>
+                        <td>Creator</td>
+                    </tr>
+                    @for($i = 0; $i != 5; $i++)
+                        @php
+                            $rowClass = "light-row";
+
+                            if($i % 2 != 0) {
+                                $rowClass = "dark-row";
+                            }
+                        @endphp
+
+                        <tr class="{{$rowClass}}" style="font-size: 8pt">
+                            <td>
+                                {{ $most_played[$i]->plays }}
+                            </td>
+                            <td>
+                                <img src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $most_played[$i]->beatmapset_id  }}" alt="thumbnail"/>
+                                <a href="/beatmapsets/{{ $most_played[$i]->beatmapset_id }}" style=" vertical-align: top;">
+                                    {{ $most_played[$i]->artist . " - " . $most_played[$i]->title }}
+                                </a>
+                            </td>
+                            <td>
+                                @if($most_played[$i]->creator_id < 0)
+                                    <a href="/users/{{-$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
+                                @else
+                                    <a href="/redirect/bancho/users/{{-$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
      </div>
 
 @endsection
