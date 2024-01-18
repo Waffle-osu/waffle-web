@@ -20,11 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'show']);
 
-
-
 Route::controller(BeatmapListController::class)->group(function() {
     Route::get('/beatmaps', 'show');
-    Route::get('/beatmaps/{status}', 'show_with_status');
+    Route::get('/beatmaps/{status}', 'status');
 });
 
 Route::get('/stats/activity-graph', [ActivityGraphController::class, 'show']);
