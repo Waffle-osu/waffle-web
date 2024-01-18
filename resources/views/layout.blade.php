@@ -39,7 +39,7 @@
                 <li class="nav-element"><a href="/download">Download</a></li>
 
                 <li class="nav-element nav-element-dropdown">
-                    <a href="/download">Beatmaps</a>
+                    <a href="/beatmaps">Beatmaps</a>
 
                     <ul class="nav-dropdown">
                         <li style="margin-top: -3px"><a href="/beatmaps/ranked">Ranked</a></li>
@@ -56,7 +56,7 @@
                     </ul>
                 </li>
                 <li class="nav-element nav-element-dropdown">
-                    <a href="/download">Community</a>
+                    <a href="/community/forums">Community</a>
 
                     <ul class="nav-dropdown">
                         <li style="margin-top: -3px"><a href="/community/forums">Forums</a></li>
@@ -69,7 +69,7 @@
             <b>69,420</b> users, <b>100</b> online now. <br/>
             A total of <b>350.21m</b> ranked plays!
         </div>
-        <div class="content">
+        <div class="content" style="position: relative">
             <div class="top">
                 <div class="search-container">
                     <form class="search-form">
@@ -126,7 +126,7 @@
                     @yield('content')
                 </div>
             </div>
-            <div class="copyright-text" style=" text-align: center; width: 100%">
+            <div class="copyright-text" style=" text-align: center; width: 100%; position: absolute; bottom: 0;">
                 <a href="https://github.com/Eeveelution" style="text-decoration: none; color: black; font-size: 7pt">waffle by furball</a>
             </div>
         </div>
