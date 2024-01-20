@@ -21,10 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'show']);
 
-Route::controller(BeatmapListController::class)->group(function() {
-    Route::get('/beatmaps', 'show');
-    Route::get('/beatmaps/{status}', 'status');
-});
+Route::get('/beatmaps', [BeatmapListController::class, 'show']);
 
 Route::get('/redirect/bancho/users/{userId}', function(string $userId) {
     return redirect("https://osu.ppy.sh/u/" . $userId);
