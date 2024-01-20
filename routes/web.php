@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityGraphController;
+use App\Http\Controllers\BeatmapActionsController;
 use App\Http\Controllers\BeatmapListController;
 use App\Http\Controllers\DownloadPageController;
 use App\Http\Controllers\IndexController;
@@ -30,4 +31,13 @@ Route::get('/redirect/bancho/users/{userId}', function(string $userId) {
 Route::get('/download', [DownloadPageController::class, 'show']);
 
 Route::get('/stats/activity-graph', [ActivityGraphController::class, 'show']);
-Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'authenticate');
+    Route::get("/logout", 'logout');
+});
+
+Route::middleware('auth')->group(function() {
+    Route::get("/actions/favourite/{beatmapsetId}", [BeatmapActionsController::class, 'favourite']);
+    Route::get("/actions/unfavourite/{beatmapsetId}", [BeatmapActionsController::class, 'unfavourite']);
+});

@@ -42,8 +42,8 @@
                     <a href="/beatmaps">Beatmaps</a>
 
                     <ul class="nav-dropdown">
-                        <li style="margin-top: -3px"><a href="/beatmaps/ranked">Ranked</a></li>
-                        <li><a href="/beatmaps/approved">Approved</a></li>
+                        <li style="margin-top: -3px"><a href="/beatmaps?status=1">Ranked</a></li>
+                        <li><a href="/beatmaps?status=2">Approved</a></li>
                         <li><a href="/beatmaps/waffle">Waffle-only</a></li>
                         <li><a href="/beatmaps/packs">Beatmap Packs</a></li>
                     </ul>
@@ -53,6 +53,7 @@
 
                     <ul class="nav-dropdown">
                         <li style="margin-top: -3px"><a href="/rankings/score">Ranked Score</a></li>
+                        <li style=""><a href="/rankings/countries">Countries</a></li>
                     </ul>
                 </li>
                 <li class="nav-element nav-element-dropdown">

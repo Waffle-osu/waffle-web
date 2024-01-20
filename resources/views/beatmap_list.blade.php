@@ -240,8 +240,11 @@
                                     @endif
 
                                     <p class="regular-text" style="display: inline; margin-left: -2px;">|</p>
-
-                                    <a class="regular-text" onclick="favouriteMap({{ $current->beatmapset_id }})">Add to Favourites</a>
+                                    @if($current->favourited == 0)
+                                        <a class="regular-text" href="/actions/favourite/{{ $current->beatmapset_id }}">Add to Favourites</a>
+                                    @else
+                                        <a class="regular-text" href="/actions/unfavourite/{{ $current->beatmapset_id }}">Remove from Favourites</a>
+                                    @endif
                                 @endif
                             </div>
                         </td>

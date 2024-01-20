@@ -18,6 +18,12 @@ class BeatmapListController extends Controller {
     public function show(Request $request) {
         $user = Auth::user();
 
+        $userId = -1;
+
+        if($user != null) {
+            $userId = $user->user_id;
+        }
+
         $lang = $request->input('lang');
         $search = $request->input('search');
         $status = $request->input('status');
@@ -48,8 +54,8 @@ class BeatmapListController extends Controller {
             $page = 0;
         }
 
-        $sqlParams =      [$status, $search, $search, $search, $search, $search];
-        $sqlParamsCount = [$status, $search, $search, $search, $search, $search];
+        $sqlParams =      [$userId, $status, $search, $search, $search, $search, $search];
+        $sqlParamsCount = [$userId, $status, $search, $search, $search, $search, $search];
 
         //if($genre !== 0 && $genre !== "0") {
         if($genre != 0) {
@@ -93,7 +99,10 @@ class BeatmapListController extends Controller {
                     result.beatmap_pack,
                     (
                         SELECT COUNT(*) FROM scores WHERE scores.beatmapset_id = result.beatmapset_id
-                    ) as 'plays'
+                    ) as 'plays',
+                    (
+                        SELECT COUNT(*) FROM beatmap_favourites WHERE beatmap_favourites.beatmapset_id = result.beatmapset_id AND beatmap_favourites.user_id = ?
+                    ) as 'favourited'
                 FROM (
                     SELECT
                         beatmapsets.beatmapset_id,

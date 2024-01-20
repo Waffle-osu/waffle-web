@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use http\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades;
 
 class LoginController extends Controller {
     public function authenticate(Request $request) {
@@ -21,9 +16,18 @@ class LoginController extends Controller {
         if(Auth::attempt($passedCredentials)) {
             $request->session()->regenerate();
 
-            return redirect('/');
+            return back();
         }
 
         return redirect('/login/invalid');
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return back();
     }
 }
