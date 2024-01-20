@@ -1,7 +1,7 @@
 :root {
-    --background-gradient-lower: #e8d2ff;
-    --background-gradient: #686fc1;
-    --background-main: #a9a9ff;
+    --background-gradient-lower: #ffd2d2;
+    --background-gradient: #c16868;
+    --background-main: : #CF4D37;
     --content-border-grey: #d2d4fa;
     --content-border: #5c559c;
     --table-row-light: #edebfa;
@@ -515,4 +515,26 @@ input[type="submit"]:hover {
 
     border-radius: 16px;
     border: solid 6px red;
+}
+
+/* Beatmap Page */
+
+.regular-text {
+    font-size: 8pt;
+}
+
+.result-td {
+    padding: 2px;
+}
+
+.source-text {
+    font-size: 7pt;
+    color: #45484A;
+}
+
+.expandableInfo {
+    height: 15px; line-height: 15px; width: 100%; float: right;
+    transition: 0.5s;
+    max-height: 0px;
+    overflow:hidden;
 }

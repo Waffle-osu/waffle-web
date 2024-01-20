@@ -18,35 +18,60 @@ class BeatmapListController extends Controller {
     public function show(Request $request) {
         $user = Auth::user();
 
+        $lang = $request->input('lang');
         $search = $request->input('search');
         $status = $request->input('status');
         $genre = $request->input('genre');
-        $lang = $request->input('lang');
-        $page = $request->input('lang');
+        $page = $request->input('page');
 
         $resultsPerPage = 20;
-        $genreSql = "";
-        $langSql = "";
+        $genreSql = "TRUE";
+        $langSql = "TRUE";
 
-        if(!is_int($status)) {
+        if($search === null) {
+            $search = "";
+        }
+
+        if(!is_numeric($status)) {
             $status = 1;
         }
 
-        if(!is_int($genre)) {
+        if(!is_numeric($genre)) {
             $genre = 0;
-            $genreSql = "AND result.genre_id = :genre";
         }
 
-        if(!is_int($lang)) {
+        if(!is_numeric($lang)) {
             $lang = 0;
-            $langSql = "AND result.language_id = :lang";
         }
 
-        if(!is_int($page)) {
+        if(!is_numeric($page)) {
             $page = 0;
         }
 
-        $query = DB::select("
+        $sqlParams =      [$status, $search, $search, $search, $search, $search];
+        $sqlParamsCount = [$status, $search, $search, $search, $search, $search];
+
+        //if($genre !== 0 && $genre !== "0") {
+        if($genre != 0) {
+            $sqlParams[] = $genre;
+            $sqlParamsCount[] = $genre;
+            $genreSql = "result.genre_id = ?";
+        }
+
+        //if($lang !== 0 && $lang !== "0") {
+        if($lang != 0) {
+            $sqlParams[] = $lang;
+            $sqlParamsCount[] = $lang;
+            $langSql = "result.language_id = ?";
+        }
+
+        $sqlParams[] = $page;
+        $sqlParams[] = $resultsPerPage;
+        $sqlParams[] = $resultsPerPage;
+        $sqlParams[] = $page;
+        $sqlParams[] = $resultsPerPage;
+
+        $nonPaginatedQuery = "
             SELECT * FROM (
                 SELECT
                     ROWNUM() AS 'row_number',
@@ -54,6 +79,7 @@ class BeatmapListController extends Controller {
                     result.artist,
                     result.title,
                     result.creator,
+                    result.creator_id,
                     result.source,
                     result.tags,
                     result.has_video,
@@ -64,13 +90,17 @@ class BeatmapListController extends Controller {
                     result.approve_date,
                     result.genre_id,
                     result.language_id,
-                    result.beatmap_pack
+                    result.beatmap_pack,
+                    (
+                        SELECT COUNT(*) FROM scores WHERE scores.beatmapset_id = result.beatmapset_id
+                    ) as 'plays'
                 FROM (
                     SELECT
                         beatmapsets.beatmapset_id,
                         beatmapsets.artist,
                         beatmapsets.title,
                         beatmapsets.creator,
+                        beatmapsets.creator_id,
                         beatmapsets.source,
                         beatmapsets.tags,
                         beatmapsets.has_video,
@@ -89,21 +119,69 @@ class BeatmapListController extends Controller {
                         LEFT JOIN waffle.beatmap_ratings ON beatmap_ratings.beatmapset_id = beatmapsets.beatmapset_id
                     WHERE ranking_status = ?
                     GROUP BY beatmaps.beatmapset_id
+                    ORDER BY beatmaps.approve_date DESC
                 ) result WHERE (
                     LOWER(result.title) LIKE CONCAT('%', ?, '%') OR
                     LOWER(result.artist) LIKE CONCAT('%', ?, '%') OR
                     LOWER(result.creator) LIKE CONCAT('%', ?, '%') OR
                     LOWER(result.source) LIKE CONCAT('%', ?, '%') OR
                     LOWER(result.tags) LIKE CONCAT('%', ?, '%')
-                )
-            ) paginated WHERE `row_number` BETWEEN ? * ? AND (? * ?) + ?
-        ", [$status, $search, $search, $search, $search, $search, $page, $resultsPerPage, $page, $resultsPerPage, $resultsPerPage]);
+                ) AND $genreSql AND $langSql
+            ) paginated
+        ";
+
+        //Kinda suboptimal but it does work
+        $query = DB::select("
+            $nonPaginatedQuery WHERE `row_number` BETWEEN ? * ? AND ((? * ?) + ?)
+        ", $sqlParams);
+
+        $theFuck = str_replace("SELECT * FROM (", "SELECT COUNT(*) AS 'count' FROM (", $nonPaginatedQuery);
+
+        $nonPaginatedResultCountQuery = DB::select(
+            $theFuck
+        , $sqlParamsCount);
 
         return view('beatmap_list', [
             'user' => $user,
             'page' => $page,
             'resultsPerPage' => $resultsPerPage,
-            'beatmaps' => $query
+            'beatmaps' => $query,
+            'mapCount' => $nonPaginatedResultCountQuery[0]->count,
+            'genre' => $genre,
+            'language' => $lang,
+            'status' => $status
         ]);
+    }
+
+    public static function formatGenreId($genre_id) {
+        return match ($genre_id) {
+            1 => "Unspecified",
+            2 => "Video Game",
+            3 => "Anime",
+            4 => "Rock",
+            5 => "Pop",
+            6 => "Other",
+            7 => "Novelty",
+            9 => "Hip Hop",
+            10 => "Techno",
+            default => "",
+        };
+    }
+
+    public static function formatLanguageId($languageId) {
+        return match ($languageId) {
+            1 => "(Other)",
+            2 => "(English)",
+            3 => "(Japanese)",
+            4 => "(Chinese)",
+            5 => "(Instrumental)",
+            6 => "(Korean)",
+            7 => "(French)",
+            8 => "(German)",
+            9 => "(Swedish)",
+            10 => "(Spanish)",
+            11 => "(Italian)",
+            default => "",
+        };
     }
 }
