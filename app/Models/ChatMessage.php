@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class ChatMessage extends Model
-{
+/**
+ * @mixin Builder
+ * @mixin \Illuminate\Database\Query\Builder
+ */
+class ChatMessage extends Model {
     protected $table = 'irc_log';
     protected $primaryKey = 'message_id';
     public $incrementing = true;

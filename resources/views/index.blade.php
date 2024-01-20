@@ -162,7 +162,7 @@
                                 @if($most_played[$i]->creator_id < 0)
                                     <a href="/users/{{-$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
                                 @else
-                                    <a href="/redirect/bancho/users/{{-$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
+                                    <a href="/redirect/bancho/users/{{$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
                                 @endif
                             </td>
                         </tr>

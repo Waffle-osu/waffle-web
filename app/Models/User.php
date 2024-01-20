@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @mixin Builder
+ * @mixin \Illuminate\Database\Query\Builder
+ */
 class User extends Authenticatable {
     protected $table = 'users';
     protected $primaryKey = 'user_id';

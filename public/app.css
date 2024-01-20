@@ -507,3 +507,12 @@ input[type="submit"]:hover {
     border-radius: 4px;
     border: 2px solid rgb(204, 151, 151);
 }
+
+.version-button {
+    display: flex;
+    width: 200px;
+    height: 300px;
+
+    border-radius: 16px;
+    border: solid 6px red;
+}

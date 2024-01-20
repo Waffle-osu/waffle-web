@@ -14,7 +14,13 @@ class IndexController extends Controller {
     public function show(): View {
         $chat_messages = ChatMessage::leftJoin('users', function($q) {
             $q->on('irc_log.sender', '=', 'users.user_id');
-        })->orderBy('message_id', 'desc')->take(10)->get()->reverse()->values();
+        })
+            ->where('target', '=', '$osu') //Only #osu
+            ->orderBy('message_id', 'desc') //Can't use time because WaffleBot messages are sent so fast they could have the same time
+            ->take(10) //Limit to 10
+            ->get()
+            ->reverse()
+            ->values();
 
         $user = Auth::user();
 
