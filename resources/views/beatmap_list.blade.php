@@ -38,10 +38,25 @@
         function favouriteMap(map) {
             fetch("/actions/favourite/" + map);
         }
+
+        let currentlyPlaying;
+
+        function playPreview(setId) {
+            if(currentlyPlaying !== undefined) {
+                currentlyPlaying.pause();
+            }
+
+            const element = document.getElementById("preview" + setId)
+            element.volume = 0.2;
+            element.play()
+
+            currentlyPlaying = element;
+        }
+
+        function redirectToSet(setId) {
+            window.location.href = "/beatmapsets/" + setId;
+        }
     </script>
-
-
-
 @endsection
 
 @section('content')
@@ -112,7 +127,7 @@
         </div>
 
         <div class="results">
-            <table style="border-spacing: 0; width: 100%">
+            <table class="result-table" style="border-spacing: 0; width: 100%">
                 <thead>
                 <tr style="background: #fbd2d2">
                     <td class="result-td regular-text"></td>
@@ -132,12 +147,16 @@
                     @php($colorClass = $i % 2 != 0 ? "dark-row" : "light-row")
                     @php($current = $beatmaps[$i])
 
-                    <tr onmouseenter="expandRow({{ $current->beatmapset_id  }})" onmouseleave="shrinkRows()" class="{{ $colorClass }}">
-                        <td class="result-td">
-                            <img src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $current->beatmapset_id }}" width="80"/>
-                        </td>
+                    <tr onmouseenter="expandRow({{ $current->beatmapset_id  }})" onmouseleave="shrinkRows()" class="{{ $colorClass }} beatmapListTr">
+                        <audio id="preview{{$current->beatmapset_id}}">
+                            <source src="{{ env("WAFFLE_BANCHO_WEB_URL") ."/mp3/preview/" . $current->beatmapset_id  }}" type="audio/mpeg"/>
+                        </audio>
 
                         <td class="result-td">
+                            <img onclick="playPreview({{$current->beatmapset_id}})" src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $current->beatmapset_id }}" width="80"/>
+                        </td>
+
+                        <td class="result-td" onclick="redirectToSet({{$current->beatmapset_id}})">
                             @if($current->has_video)
                                 <img src="assets/video-icon.png" class="video-icon"
                                      style="vertical-align: middle; display: inline-block; width: 20px; height: 23px; padding-right: 4px; float: left"/>
@@ -152,7 +171,7 @@
                                style=" vertical-align: middle;">{{ $current->title }}</a>
                         </td>
 
-                        <td class="result-td">
+                        <td class="result-td" onclick="redirectToSet({{$current->beatmapset_id}})">
                             <p class="regular-text">{{ $current->artist  }}</p>
 
                             @if($current->source !== "")
@@ -160,7 +179,7 @@
                             @endif
                         </td>
 
-                        <td class="result-td">
+                        <td class="result-td" onclick="redirectToSet({{$current->beatmapset_id}})">
                             @if($current->creator_id > 0)
                                 <a class="regular-text"
                                    href="/redirect/bancho/users/{{ $current->creator_id }}">{{$current->creator}}</a>
@@ -170,7 +189,7 @@
                             @endif
                         </td>
 
-                        <td class="result-td" style="width: 96px">
+                        <td class="result-td" style="width: 96px" onclick="redirectToSet({{$current->beatmapset_id}})">
                             @php($currentDiff = $difficultyInfo[$current->beatmapset_id])
 
                             @if($currentDiff != null)
@@ -196,7 +215,7 @@
 
                         </td>
 
-                        <td class="result-td" style="min-width: 70px">
+                        <td class="result-td" style="min-width: 70px" onclick="redirectToSet({{$current->beatmapset_id}})">
                             <p class="regular-text">{{ date("M j, Y", strtotime($current->approve_date))  }}</p>
 
                             @if($current->beatmapset_id >= 0)
@@ -204,7 +223,7 @@
                             @endif
                         </td>
 
-                        <td class="result-td">
+                        <td class="result-td" onclick="redirectToSet({{$current->beatmapset_id}})">
                             @if($current->votes === 0)
                                 <p style="font-size: 7pt; text-align: center">-</p>
                                 <p style="font-size: 7pt; text-align: center">needs a vote!</p>
@@ -219,11 +238,11 @@
                             @endif
                         </td>
 
-                        <td class="result-td" style="width: 55px">
+                        <td class="result-td" style="width: 55px" onclick="redirectToSet({{$current->beatmapset_id}})">
                             <p class="regular-text" style="text-align: center">{{ number_format($current->plays) }}</p>
                         </td>
 
-                        <td class="result-td">
+                        <td class="result-td" onclick="redirectToSet({{$current->beatmapset_id}})">
                             @if($current->beatmap_pack !== "")
                                 <img src="assets/tick.png"/>
                                 <br/>
@@ -231,7 +250,7 @@
                             @endif
                         </td>
 
-                        <td class="result-td">
+                        <td class="result-td" onclick="redirectToSet({{$current->beatmapset_id}})">
                             <a class="regular-text" href="/beatmaps?genre={{$current->genre_id}}">
                                 {{ BeatmapListController::formatGenreId($current->genre_id) }}
                             </a>

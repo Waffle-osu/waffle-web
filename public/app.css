@@ -539,3 +539,8 @@ input[type="submit"]:hover {
     max-height: 0px;
     overflow:hidden;
 }
+
+table.result-table tr:hover td {
+    background-color: #ffffff;
+}
+
