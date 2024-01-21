@@ -44,6 +44,7 @@
         function playPreview(setId) {
             if(currentlyPlaying !== undefined) {
                 currentlyPlaying.pause();
+                currentlyPlaying.load();
             }
 
             const element = document.getElementById("preview" + setId)
