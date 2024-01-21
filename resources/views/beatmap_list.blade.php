@@ -10,26 +10,29 @@
 
     <script>
         let previousExpanded;
+        let timeout;
         function expandRow(setId)
         {
-            if(previousExpanded !== undefined) {
-                previousExpanded.style.maxHeight = "0px";
-                previousExpanded.style.transition = "0.5s";
-            }
+            timeout = setTimeout(() => {
+                if(previousExpanded !== undefined) {
+                    previousExpanded.style.maxHeight = "0px";
+                    previousExpanded.style.transition = "0.5s";
+                }
 
-            const element = document.getElementById("info" + setId);
+                const element = document.getElementById("info" + setId);
 
-            setTimeout(() => {
-                element.style.maxHeight = "15px";
-                element.style.transition = "0.5s";
-            }, 0)
+                setTimeout(() => {
+                    element.style.maxHeight = "15px";
+                    element.style.transition = "0.5s";
+                }, 0)
 
-            previousExpanded = element;
+                previousExpanded = element;
+            }, 500);
         }
 
         function shrinkRows()
         {
-
+            clearTimeout(timeout);
         }
 
         function favouriteMap(map) {
@@ -168,7 +171,29 @@
                         </td>
 
                         <td class="result-td" style="width: 96px">
-                            <img src="assets/diff/insane.png"/>
+                            @php($currentDiff = $difficultyInfo[$current->beatmapset_id])
+
+                            @if($currentDiff != null)
+                                @php($splitDiffs = explode(',', $currentDiff->diff_values))
+                                @php($splitPlaymodes = explode(',', $currentDiff->playmodes))
+
+                                @for($k = 0; $k != 4; $k++)
+                                    @for($j = 0; $j != count($splitDiffs); $j++)
+                                        @if($splitPlaymodes[$j] == $k)
+                                            @if($splitDiffs[$j] < 2.7)
+                                                <img src="assets/diff/easy{{$k}}.png" alt="E"/>
+                                            @elseif($splitDiffs[$j] < 3.7)
+                                                <img src="assets/diff/normal{{$k}}.png" alt="E"/>
+                                            @elseif($splitDiffs[$j] < 4.5)
+                                                <img src="assets/diff/hard{{$k}}.png" alt="E"/>
+                                            @else
+                                                <img src="assets/diff/insane{{$k}}.png" alt="E"/>
+                                            @endif
+                                        @endif
+                                    @endfor
+                                @endfor
+                            @endif
+
                         </td>
 
                         <td class="result-td" style="min-width: 70px">

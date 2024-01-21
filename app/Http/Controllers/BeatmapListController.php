@@ -150,11 +150,50 @@ class BeatmapListController extends Controller {
             $theFuck
         , $sqlParamsCount);
 
+        $setIds = [];
+
+        for($i = 0; $i != count($query); $i++) {
+            $current = $query[$i];
+            $setIds[] = $current->beatmapset_id;
+        }
+
+        $joinedValues = join(',', $setIds);
+
+        //Get difficulties
+        $difficultyAndModeQuery = "
+            SELECT diff_values, playmodes, beatmapset_id FROM (
+                SELECT
+                    GROUP_CONCAT(eyup_stars ORDER BY eyup_stars ASC) 'diff_values',
+                    GROUP_CONCAT(b.playmode) 'playmodes',
+                    d.beatmapset_id
+                FROM
+                    osu_beatmap_difficulty d
+                LEFT JOIN
+                    beatmaps b ON b.beatmap_id = d.beatmap_id
+                WHERE
+                    b.playmode = d.mode
+                GROUP BY
+                    beatmapset_id
+            ) a WHERE beatmapset_id IN (
+                $joinedValues
+            )
+        ";
+
+        $difficultyQuery = DB::select($difficultyAndModeQuery);
+        $difficultyInfo = [];
+
+        for($i = 0; $i != count($difficultyQuery); $i++) {
+            $current = $difficultyQuery[$i];
+
+            $difficultyInfo[$current->beatmapset_id] = $current;
+        }
+
         return view('beatmap_list', [
             'user' => $user,
             'page' => $page,
             'resultsPerPage' => $resultsPerPage,
             'beatmaps' => $query,
+            'difficultyInfo' => $difficultyInfo,
             'mapCount' => $nonPaginatedResultCountQuery[0]->count,
             'genre' => $genre,
             'language' => $lang,

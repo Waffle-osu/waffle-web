@@ -525,6 +525,7 @@ input[type="submit"]:hover {
 
 .result-td {
     padding: 2px;
+    cursor: pointer;
 }
 
 .source-text {

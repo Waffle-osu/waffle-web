@@ -33,7 +33,7 @@ Route::get('/download', [DownloadPageController::class, 'show']);
 Route::get('/stats/activity-graph', [ActivityGraphController::class, 'show']);
 
 Route::controller(LoginController::class)->group(function () {
-    Route::get('/login', 'authenticate');
+    Route::post('/login', 'authenticate');
     Route::get("/logout", 'logout');
 });
 
