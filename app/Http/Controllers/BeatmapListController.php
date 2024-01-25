@@ -37,8 +37,8 @@ class BeatmapListController extends Controller {
         //I love this comedy
         //`WHERE TRUE`                                : 17.781 seconds
         //`WHERE beatmaps.beatmapset_id != 6942069420`: 0.500 seconds
-        //17-second difference... both are always true...
-        $rankingStatusSql = "WHERE beatmaps.beatmapset_id != 6942069420";
+        //17-second difference... both are always true... nice.
+        $rankingStatusSql = "WHERE beatmaps.beatmapset_id != 69420 * 69420";
 
         if($search === null) {
             $search = "";
