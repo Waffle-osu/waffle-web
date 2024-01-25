@@ -33,8 +33,12 @@ class BeatmapListController extends Controller {
         $resultsPerPage = 20;
         $genreSql = "TRUE";
         $langSql = "TRUE";
-        $waffleOnlySql = "TRUE";
-        $rankingStatusSql = "TRUE";
+
+        //I love this comedy
+        //`WHERE TRUE`                                : 17.781 seconds
+        //`WHERE beatmaps.beatmapset_id != 6942069420`: 0.500 seconds
+        //17-second difference... both are always true...
+        $rankingStatusSql = "WHERE beatmaps.beatmapset_id != 6942069420";
 
         if($search === null) {
             $search = "";
@@ -46,6 +50,10 @@ class BeatmapListController extends Controller {
         //Handle statuses, whether to filter by them at all, and whether to apply waffle-only filter
         if(!is_numeric($status)) {
             $status = 1;
+            $rankingStatusSql = "WHERE ranking_status = ?";
+
+            $sqlParams[] = $status;
+            $sqlParamsCount[] = $status;
         } else {
             switch($status) {
                 case -2:
@@ -53,10 +61,10 @@ class BeatmapListController extends Controller {
                     //This is for the 'All' filter
                     break;
                 case 3:
-                    $rankingStatusSql = "beatmap_source = 1";
+                    $rankingStatusSql = "WHERE beatmap_source = 1";
                     break;
                 default:
-                    $rankingStatusSql = "ranking_status = ?";
+                    $rankingStatusSql = "WHERE ranking_status = ?";
                     $sqlParams[] = $status;
                     $sqlParamsCount[] = $status;
                     break;
@@ -149,7 +157,7 @@ class BeatmapListController extends Controller {
                     FROM waffle.beatmapsets
                         LEFT JOIN waffle.beatmaps ON beatmaps.beatmapset_id = beatmapsets.beatmapset_id
                         LEFT JOIN waffle.beatmap_ratings ON beatmap_ratings.beatmapset_id = beatmapsets.beatmapset_id
-                    WHERE $rankingStatusSql
+                    $rankingStatusSql
                     GROUP BY beatmaps.beatmapset_id
                     ORDER BY beatmaps.approve_date DESC
                 ) result WHERE (
@@ -162,14 +170,10 @@ class BeatmapListController extends Controller {
             ) paginated
         ";
 
-        $startTime = time();
-
         //Kinda suboptimal but it does work
         $query = DB::select("
             $nonPaginatedQuery WHERE `row_number` BETWEEN ? * ? AND ((? * ?) + ?)
         ", $sqlParams);
-
-        throw new \Exception(time() - $startTime);
 
         $theFuck = str_replace("SELECT * FROM (", "SELECT COUNT(*) AS 'count' FROM (", $nonPaginatedQuery);
 
@@ -187,26 +191,31 @@ class BeatmapListController extends Controller {
         $joinedValues = join(',', $setIds);
 
         //Get difficulties
-        $difficultyAndModeQuery = "
-            SELECT diff_values, playmodes, beatmapset_id FROM (
-                SELECT
-                    GROUP_CONCAT(eyup_stars ORDER BY eyup_stars ASC) 'diff_values',
-                    GROUP_CONCAT(b.playmode) 'playmodes',
-                    d.beatmapset_id
-                FROM
-                    osu_beatmap_difficulty d
-                LEFT JOIN
-                    beatmaps b ON b.beatmap_id = d.beatmap_id
-                WHERE
-                    b.playmode = d.mode
-                GROUP BY
-                    beatmapset_id
-            ) a WHERE beatmapset_id IN (
-                $joinedValues
-            )
-        ";
+        $difficultyQuery = [];
 
-        $difficultyQuery = DB::select($difficultyAndModeQuery);
+        if(count($setIds) != 0) {
+            $difficultyAndModeQuery = "
+                SELECT diff_values, playmodes, beatmapset_id FROM (
+                    SELECT
+                            GROUP_CONCAT(eyup_stars ORDER BY eyup_stars ASC) 'diff_values',
+                            GROUP_CONCAT(b.playmode) 'playmodes',
+                            d.beatmapset_id
+                        FROM
+                            osu_beatmap_difficulty d
+                        LEFT JOIN
+                            beatmaps b ON b.beatmap_id = d.beatmap_id
+                        WHERE
+                            b.playmode = d.mode
+                        GROUP BY
+                            beatmapset_id
+                    ) a WHERE beatmapset_id IN (
+                    $joinedValues
+                )
+            ";
+
+            $difficultyQuery = DB::select($difficultyAndModeQuery);
+        }
+
         $difficultyInfo = [];
 
         for($i = 0; $i != count($difficultyQuery); $i++) {
