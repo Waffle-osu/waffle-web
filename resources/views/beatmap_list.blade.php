@@ -217,10 +217,14 @@
                         </td>
 
                         <td class="result-td" style="min-width: 70px" onclick="redirectToSet({{$current->beatmapset_id}})">
-                            <p class="regular-text">{{ date("M j, Y", strtotime($current->approve_date))  }}</p>
+                            @if(str_starts_with($current->approve_date, "1000-"))
+                                <p class="regular-text">Not approved.</p>
+                            @else
+                                <p class="regular-text">{{ date("M j, Y", strtotime($current->approve_date))  }}</p>
 
-                            @if($current->beatmapset_id >= 0)
-                                <p style="font-size: 7pt">Ranked by Furball</p>
+                                @if($current->beatmapset_id < 100000000)
+                                    <p style="font-size: 7pt">Ranked by Furball</p>
+                                @endif
                             @endif
                         </td>
 

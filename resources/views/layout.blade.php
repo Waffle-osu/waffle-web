@@ -44,7 +44,7 @@
                     <ul class="nav-dropdown">
                         <li style="margin-top: -3px"><a href="/beatmaps?status=1">Ranked</a></li>
                         <li><a href="/beatmaps?status=2">Approved</a></li>
-                        <li><a href="/beatmaps/waffle">Waffle-only</a></li>
+                        <li><a href="/beatmaps?status=3">Waffle-only</a></li>
                         <li><a href="/beatmaps/packs">Beatmap Packs</a></li>
                     </ul>
                 </li>

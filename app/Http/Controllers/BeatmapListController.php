@@ -33,13 +33,39 @@ class BeatmapListController extends Controller {
         $resultsPerPage = 20;
         $genreSql = "TRUE";
         $langSql = "TRUE";
+        $waffleOnlySql = "TRUE";
+        $rankingStatusSql = "TRUE";
 
         if($search === null) {
             $search = "";
         }
 
+        $sqlParams = [$userId];
+        $sqlParamsCount = [$userId];
+
+        //Handle statuses, whether to filter by them at all, and whether to apply waffle-only filter
         if(!is_numeric($status)) {
             $status = 1;
+        } else {
+            switch($status) {
+                case -2:
+                    //Just so it doesn't go to default
+                    //This is for the 'All' filter
+                    break;
+                case 3:
+                    $rankingStatusSql = "beatmap_source = 1";
+                    break;
+                default:
+                    $rankingStatusSql = "ranking_status = ?";
+                    $sqlParams[] = $status;
+                    $sqlParamsCount[] = $status;
+                    break;
+            }
+        }
+
+        for($i = 0; $i != 5; $i++) {
+            $sqlParams[] = $search;
+            $sqlParamsCount[] = $search;
         }
 
         if(!is_numeric($genre)) {
@@ -53,9 +79,6 @@ class BeatmapListController extends Controller {
         if(!is_numeric($page)) {
             $page = 0;
         }
-
-        $sqlParams =      [$userId, $status, $search, $search, $search, $search, $search];
-        $sqlParamsCount = [$userId, $status, $search, $search, $search, $search, $search];
 
         //if($genre !== 0 && $genre !== "0") {
         if($genre != 0) {
@@ -126,7 +149,7 @@ class BeatmapListController extends Controller {
                     FROM waffle.beatmapsets
                         LEFT JOIN waffle.beatmaps ON beatmaps.beatmapset_id = beatmapsets.beatmapset_id
                         LEFT JOIN waffle.beatmap_ratings ON beatmap_ratings.beatmapset_id = beatmapsets.beatmapset_id
-                    WHERE ranking_status = ?
+                    WHERE $rankingStatusSql
                     GROUP BY beatmaps.beatmapset_id
                     ORDER BY beatmaps.approve_date DESC
                 ) result WHERE (
@@ -139,10 +162,14 @@ class BeatmapListController extends Controller {
             ) paginated
         ";
 
+        $startTime = time();
+
         //Kinda suboptimal but it does work
         $query = DB::select("
             $nonPaginatedQuery WHERE `row_number` BETWEEN ? * ? AND ((? * ?) + ?)
         ", $sqlParams);
+
+        throw new \Exception(time() - $startTime);
 
         $theFuck = str_replace("SELECT * FROM (", "SELECT COUNT(*) AS 'count' FROM (", $nonPaginatedQuery);
 
