@@ -200,15 +200,7 @@
                                 @for($k = 0; $k != 4; $k++)
                                     @for($j = 0; $j != count($splitDiffs); $j++)
                                         @if($splitPlaymodes[$j] == $k)
-                                            @if($splitDiffs[$j] < 2.7)
-                                                <img src="assets/diff/easy{{$k}}.png" alt="E"/>
-                                            @elseif($splitDiffs[$j] < 3.7)
-                                                <img src="assets/diff/normal{{$k}}.png" alt="E"/>
-                                            @elseif($splitDiffs[$j] < 4.5)
-                                                <img src="assets/diff/hard{{$k}}.png" alt="E"/>
-                                            @else
-                                                <img src="assets/diff/insane{{$k}}.png" alt="E"/>
-                                            @endif
+                                            <x-difficulty-icon eyupStars="{{ $splitDiffs[$j]}}" mode="{{ $k }}"/>
                                         @endif
                                     @endfor
                                 @endfor

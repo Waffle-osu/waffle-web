@@ -544,3 +544,27 @@ table.result-table tr:hover td {
     background-color: #ffffff;
 }
 
+/* Beatmap Info */
+.difficulty-tabs .difficulty-tab {
+    float: left;
+    margin-right: 2px;
+    line-height: 25px;
+}
+
+.difficulty-tab a:hover {
+    background-color: white;
+}
+
+.difficulty-tabs a {
+    color: #5e5e5e;
+    display: block;
+    width: auto;
+    text-decoration: none;
+    background: #fbd6d6;
+    margin: -1px;
+    padding: 0px 10px 0px 10px;
+}
+
+.difficulty-tabs .difficulty-icon {
+    vertical-align: middle;
+}

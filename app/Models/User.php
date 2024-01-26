@@ -8,6 +8,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * @mixin Builder
  * @mixin \Illuminate\Database\Query\Builder
+ *
+ * @property int $user_id
+ * @property string $username
+ * @property string $password
+ * @property string $country
+ * @property int $banned
+ * @property string $banned_reason
+ * @property int $privileges
+ * @property string $joined_at
+ * @property int $silenced_until
  */
 class User extends Authenticatable {
     protected $table = 'users';

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityGraphController;
-use App\Http\Controllers\BeatmapActionsController;
+use App\Http\Controllers\BeatmapController;
 use App\Http\Controllers\BeatmapListController;
 use App\Http\Controllers\DownloadPageController;
 use App\Http\Controllers\IndexController;
@@ -37,7 +37,12 @@ Route::controller(RedirectController::class)->group(function() {
     Route::get('/redirect/bancho/beatmapset/{userId}', 'banchoBeatmapsets');
 });
 
+Route::controller(BeatmapController::class)->group(function() {
+    Route::get('/beatmapsets/{setId}', 'showScores');
+    Route::get('/beatmapsets/{setId}/{beatmapId}', 'showScores');
+});
+
 Route::middleware('auth')->group(function() {
-    Route::get("/actions/favourite/{beatmapsetId}", [BeatmapActionsController::class, 'favourite']);
-    Route::get("/actions/unfavourite/{beatmapsetId}", [BeatmapActionsController::class, 'unfavourite']);
+    Route::get("/actions/favourite/{beatmapsetId}", [BeatmapController::class, 'favourite']);
+    Route::get("/actions/unfavourite/{beatmapsetId}", [BeatmapController::class, 'unfavourite']);
 });
