@@ -568,3 +568,13 @@ table.result-table tr:hover td {
 .difficulty-tabs .difficulty-icon {
     vertical-align: middle;
 }
+
+.starfield {
+    height: 14px;
+    background: url("assets/starn.png") repeat-x;
+}
+
+.starfield .active {
+    height: 14px;
+    background: url("assets/star.png") repeat-x;
+}

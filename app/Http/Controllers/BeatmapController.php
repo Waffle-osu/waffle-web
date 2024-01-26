@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beatmap;
+use App\Models\BeatmapFavourites;
 use App\Models\BeatmapSet;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -62,11 +63,16 @@ class BeatmapController extends Controller {
             }
         }
 
+        $favourites = BeatmapFavourites::where('beatmapset_id', $setId)->leftJoin('users', function($q) {
+            $q->on('users.user_id', '=', 'beatmap_favourites.user_id');
+        })->get(['username', 'users.user_id']);
+
         return view('beatmap_info', [
             "user" => $user,
             "beatmapset" => $beatmapset,
             "currentDiff" => $currentDifficulty,
-            "difficulties" => $difficulties
+            "difficulties" => $difficulties,
+            "favourites" => $favourites
         ]);
     }
 }
