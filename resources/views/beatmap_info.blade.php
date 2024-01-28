@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <div class="beatmap-info-content" style="width: 880px; margin-left: -9px">
+    <div class="beatmap-info-content" style="width: 880px;">
         <a style="font-size: 16pt; display: inline; color: #264a7f">Beatmap Listing</a>
         <p class="heading-text" style="font-size: 16pt; display: inline">» {{ $beatmapset->artist }}
             - {{ $beatmapset->title }}</p>
@@ -19,7 +19,7 @@
         <br/>
 
         <div class="difficulty-tabs"
-             style="width: 100%; border-bottom: solid #CF4D37 1px; height: 25px;">
+             style="width: 100%; border-bottom: solid #CF4D37 1px; height: 25px; margin-left: -9px">
             <ul style="list-style: none; margin: 0; padding: 0; display: block">
                 @for($i = 0; $i != count($difficulties); $i++)
                     @php($current = $difficulties[$i])
@@ -39,7 +39,7 @@
         </div>
 
         <div>
-            <table style="background-color: #fbd6d6; width: 100%">
+            <table style="background-color: #fbd6d6; width: 100%; margin-left: -9px">
                 <tbody>
                     <tr style="font-size: 8pt; height: 30px">
                         <td width="0">
@@ -236,8 +236,21 @@
             </table>
 
             <br/>
+            <br/>
 
+            <p class="heading-text">Creators Words</p>
 
+            <br/>
+
+            <div class="padded-area" style="padding-left: 7px; padding-right: 8px;">
+                <div class="download-button" style="margin-left: 8px; float: right">
+                    dl button
+                </div>
+
+                <div class="post-text">
+
+                </div>
+            </div>
         </div>
     </div>
 @endsection
