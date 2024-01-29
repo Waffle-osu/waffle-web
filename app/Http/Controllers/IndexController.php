@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class IndexController extends Controller {
+    public static string $chatActionRegex = '/(?<title> \\([^)]*\\)\\ )  (?<l> [[^\\]]*\\] )/';
+
+    public static function formatActionString(string $str): string {
+        $str = str_replace('ACTION', '', $str);
+
+        preg_match(self::$chatActionRegex, $str, $matches);
+
+        //return $matches[0];
+        return json_encode($matches);
+    }
+
     public function show(): View {
         $chat_messages = ChatMessage::leftJoin('users', function($q) {
             $q->on('irc_log.sender', '=', 'users.user_id');

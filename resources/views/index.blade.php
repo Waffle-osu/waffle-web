@@ -1,3 +1,4 @@
+@php use App\Http\Controllers\IndexController; @endphp
 @extends('layout')
 
 @section('title', 'Main Page')
@@ -18,7 +19,8 @@
                     01.03.2024
                     <b style="color: rgb(127,48,38); display: inline">Waffle is released!</b>
 
-                    (Furball)</div>
+                    (Furball)
+                </div>
                 <hr>
                 <div class="news-text" style="margin-bottom: -2px">
                     Waffle is finally released! (absolute lie, impossible) <br/>
@@ -37,7 +39,8 @@
                     17.01.2024
                     <b style="color: rgb(127,48,38); display: inline">Waffle Development Progress</b>
 
-                    (Furball)</div>
+                    (Furball)
+                </div>
                 <hr>
                 <div class="news-text" style="margin-bottom: -2px">
                     Beatmap Submission System fully working! <br/>
@@ -100,7 +103,14 @@
 
                             <tr class="{{ $chatRowClass }}">
                                 <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
-                                <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
+
+                                @if(str_contains($messages[$i]->message, 'ACTION'))
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ IndexController::formatActionString($messages[$i]->message) }}</td>
+                                @else
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
+                                @endif
+
+
                             </tr>
                         @endfor
                         </tbody>
@@ -111,9 +121,12 @@
     </div>
     <div class="right-side">
         <div class="button-container" style="text-align: center">
-            <a href="/download"><img height="60" style="margin-bottom: 2px" src="assets/button-download.png" alt="Download"/></a>
-            <a href="/discord"><img height="60" style="text-align: center" src="assets/button-join.png" alt="Join the Discord"/></a>
-            <a href="/contribute"><img height="60" style="text-align: center" src="assets/button-contribute.png" alt="Contribute"/></a>
+            <a href="/download"><img height="60" style="margin-bottom: 2px" src="assets/button-download.png"
+                                     alt="Download"/></a>
+            <a href="/discord"><img height="60" style="text-align: center" src="assets/button-join.png"
+                                    alt="Join the Discord"/></a>
+            <a href="/contribute"><img height="60" style="text-align: center" src="assets/button-contribute.png"
+                                       alt="Contribute"/></a>
         </div>
 
         <br/>
@@ -134,42 +147,43 @@
         <div class="most-played-table">
             <table style="width: 100%; border: 1px; border-radius: 3px; font-size: 8pt">
                 <tbody>
-                    <tr>
-                        <td>Plays</td>
-                        <td>Artist / Title</td>
-                        <td>Creator</td>
+                <tr>
+                    <td>Plays</td>
+                    <td>Artist / Title</td>
+                    <td>Creator</td>
+                </tr>
+                @for($i = 0; $i != 5; $i++)
+                    @php
+                        $rowClass = "light-row";
+
+                        if($i % 2 != 0) {
+                            $rowClass = "dark-row";
+                        }
+                    @endphp
+
+                    <tr class="{{$rowClass}}" style="font-size: 8pt">
+                        <td>
+                            {{ $most_played[$i]->plays }}
+                        </td>
+                        <td>
+                            <img src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $most_played[$i]->beatmapset_id  }}"
+                                 alt="thumbnail"/>
+                            <a href="/beatmapsets/{{ $most_played[$i]->beatmapset_id }}" style=" vertical-align: top;">
+                                {{ $most_played[$i]->artist . " - " . $most_played[$i]->title }}
+                            </a>
+                        </td>
+                        <td>
+                            @if($most_played[$i]->creator_id < 0)
+                                <a href="/users/{{-$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
+                            @else
+                                <a href="/redirect/bancho/users/{{$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
+                            @endif
+                        </td>
                     </tr>
-                    @for($i = 0; $i != 5; $i++)
-                        @php
-                            $rowClass = "light-row";
-
-                            if($i % 2 != 0) {
-                                $rowClass = "dark-row";
-                            }
-                        @endphp
-
-                        <tr class="{{$rowClass}}" style="font-size: 8pt">
-                            <td>
-                                {{ $most_played[$i]->plays }}
-                            </td>
-                            <td>
-                                <img src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $most_played[$i]->beatmapset_id  }}" alt="thumbnail"/>
-                                <a href="/beatmapsets/{{ $most_played[$i]->beatmapset_id }}" style=" vertical-align: top;">
-                                    {{ $most_played[$i]->artist . " - " . $most_played[$i]->title }}
-                                </a>
-                            </td>
-                            <td>
-                                @if($most_played[$i]->creator_id < 0)
-                                    <a href="/users/{{-$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
-                                @else
-                                    <a href="/redirect/bancho/users/{{$most_played[$i]->creator_id}}">{{$most_played[$i]->creator}}</a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endfor
+                @endfor
                 </tbody>
             </table>
         </div>
-     </div>
+    </div>
 
 @endsection
