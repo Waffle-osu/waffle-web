@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Beatmap;
 use App\Models\BeatmapFavourites;
 use App\Models\BeatmapSet;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

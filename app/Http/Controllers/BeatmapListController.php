@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BeatmapSet;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +32,7 @@ class BeatmapListController extends Controller {
 
         //I love this comedy
         //`WHERE TRUE`                                : 17.781 seconds
-        //`WHERE beatmaps.beatmapset_id != 6942069420`: 0.500 seconds
+        //`WHERE beatmaps.beatmapset_id != 69420 * 69420`: 0.500 seconds
         //17-second difference... both are always true... nice.
         $rankingStatusSql = "WHERE beatmaps.beatmapset_id != 69420 * 69420";
 
