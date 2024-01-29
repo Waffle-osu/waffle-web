@@ -34,7 +34,7 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::controller(RedirectController::class)->group(function() {
     Route::get('/redirect/bancho/users/{userId}', 'banchoUsers');
-    Route::get('/redirect/bancho/beatmapset/{userId}', 'banchoBeatmapsets');
+    Route::get('/redirect/bancho/beatmapset/{setId}', 'banchoBeatmapsets');
 });
 
 Route::controller(BeatmapController::class)->group(function() {

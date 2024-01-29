@@ -99,13 +99,25 @@
                                 if($i % 2 != 0) {
                                     $chatRowClass = "dark-row";
                                 }
+
+                                $matches = IndexController::formatActionString($messages[$i]->message);
+                                $link = "";
+
+                                if($matches[0] != '') {
+                                    $link = str_replace('http://osu.ppy.sh', '', $matches[1]);
+                                    $link = str_replace('https://osu.ppy.sh', '', $link);
+                                    $link = str_replace('/s/', '/redirect/bancho/beatmapset/', $link);
+                                    $link = str_replace('/b/', '/redirect/bancho/beatmap/', $link);
+                                }
                             @endphp
 
                             <tr class="{{ $chatRowClass }}">
                                 <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
 
                                 @if(str_contains($messages[$i]->message, 'ACTION'))
-                                    <td class="chat-msg">{{ $messages[$i]->username  }}: {{ IndexController::formatActionString($messages[$i]->message) }}</td>
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}:
+                                        <a href="{{ $link }}"> is playing {{ $matches[0] }}</a>
+                                    </td>
                                 @else
                                     <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
                                 @endif

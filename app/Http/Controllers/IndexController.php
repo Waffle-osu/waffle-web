@@ -11,15 +11,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class IndexController extends Controller {
-    public static string $chatActionRegex = '/(?<title> \\([^)]*\\)\\ )  (?<l> [[^\\]]*\\] )/';
+    public static string $chatActionRegex = '/\\((?<title>[^)]*\\))\\[(?<link>[^\\]]*)\\]/i';
 
-    public static function formatActionString(string $str): string {
-        $str = str_replace('ACTION', '', $str);
+    public static function formatActionString(string $str) {
+        try {
+            $str = str_replace('ACTION', '', $str);
 
-        preg_match(self::$chatActionRegex, $str, $matches);
+            preg_match(self::$chatActionRegex, $str, $matches);
 
-        //return $matches[0];
-        return json_encode($matches);
+            $title = $matches['title'];
+            $link = $matches['link'];
+
+            //return $matches[0];
+            return [$title, $link];
+        }catch(\Exception $e) {
+            return ['', ''];
+        }
     }
 
     public function show(): View {
