@@ -15,7 +15,7 @@ class IndexController extends Controller {
         $chat_messages = ChatMessage::leftJoin('users', function($q) {
             $q->on('irc_log.sender', '=', 'users.user_id');
         })
-            ->where('target', '=', '$osu') //Only #osu
+            ->where('target', '=', '#osu') //Only #osu
             ->orderBy('message_id', 'desc') //Can't use time because WaffleBot messages are sent so fast they could have the same time
             ->take(10) //Limit to 10
             ->get()
