@@ -34,7 +34,7 @@ class BeatmapController extends Controller {
 
     }
 
-    public function showScores(string $setId, string $beatmapId = '') {
+    public function showScores(string $setId, string $beatmapId = '', string $mode = '') {
         $user = Auth::user();
 
         $beatmapset = BeatmapSet::where('beatmapset_id', $setId)->first();
@@ -78,6 +78,12 @@ class BeatmapController extends Controller {
             }
         }
 
+        $actualMode = $mode;
+
+        //Don't allow stuff like osu!standard leaderboards on taiko maps
+        if($currentDifficulty->playmode != $mode) {
+            $actualMode = $currentDifficulty->playmode;
+        }
 
         return view('beatmap_info', [
             "user" => $user,

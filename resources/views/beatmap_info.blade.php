@@ -24,8 +24,6 @@
                 @for($i = 0; $i != count($difficulties); $i++)
                     @php($current = $difficulties[$i])
 
-
-
                     <li class="difficulty-tab">
                         <a href="/beatmapsets/{{ $current->beatmapset_id }}/{{ $current->beatmap_id }}">
                             <x-difficulty-icon eyupStars="{{ $current->eyup_stars }}" mode="{{ $current->playmode }}" class="difficulty-icon"/>
@@ -242,13 +240,30 @@
 
             <div class="padded-area" style="padding-left: 7px; padding-right: 8px;">
                 <div class="download-button" style="margin-left: 8px; float: right">
-                    dl button
+                    @if($user != null)
+                        <a href="/beatmaps/download/{{ $current->beatmapset_id }}">
+                            <img src="/assets/beatmap-download.png"/>
+                        </a>
+                    @else
+                        <a href="/login">
+                            <img src="/assets/beatmap-download-login.png"/>
+                        </a>
+                    @endif
                 </div>
 
-                <div class="post-text">
+                <div class="post-text" style="overflow: auto; font-size: 8pt">
+                    <img src="{{ env("WAFFLE_BANCHO_WEB_URL") }}/mt/{{ $current->beatmapset_id }}l" style="float:left;padding:3px;width:160px;height:120px"/>
 
+                    Currently unimplemented...
                 </div>
             </div>
+
+            <br/>
+            <br/>
+
+            <p class="heading-text">Song Ranking</p>
+
+            <br/>
         </div>
     </div>
 @endsection
