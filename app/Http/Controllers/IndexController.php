@@ -20,8 +20,10 @@ class IndexController extends Controller {
             $title = $matches['title'];
             $link = $matches['link'];
 
-            //return $matches[0];
-            return [$title, $link];
+            return [
+                trim($title, ')'),
+                $link
+            ];
         }catch(\Exception $e) {
             return ['', ''];
         }

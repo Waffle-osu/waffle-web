@@ -508,6 +508,12 @@ input[type="submit"]:hover {
     border: 2px solid rgb(204, 151, 151);
 }
 
+.most-played-thumbnail {
+    float: left;
+    margin-right: 3px;
+    border-radius: 5px;
+}
+
 .version-button {
     display: flex;
     width: 200px;

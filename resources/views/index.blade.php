@@ -114,15 +114,19 @@
                             <tr class="{{ $chatRowClass }}">
                                 <td class="chat-time">{{ date('H:i', strtotime($messages[$i]->date)) }}</td>
 
-                                @if(str_contains($messages[$i]->message, 'ACTION'))
-                                    <td class="chat-msg">{{ $messages[$i]->username  }}:
-                                        <a href="{{ $link }}"> is playing {{ $matches[0] }}</a>
+                                @if(str_starts_with($messages[$i]->message, 'ACTION is listening to '))
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}
+                                        <a href="{{ $link }}"> is listening to {{ $matches[0] }}</a>
                                     </td>
+                                @elseif(str_starts_with($messages[$i]->message, 'ACTION is playing '))
+                                    <td class="chat-msg">{{ $messages[$i]->username  }}
+                                        <a href="{{ $link }}"> is playing to {{ $matches[0] }}</a>
+                                    </td>
+                                @elseif(str_starts_with($messages[$i]->message, 'ACTION'))
+                                    <td class="chat-msg">{{ $messages[$i]->username  }} is {{ str_replace("ACTION", "", $messages[$i]->message) }}</td>
                                 @else
                                     <td class="chat-msg">{{ $messages[$i]->username  }}: {{ $messages[$i]->message }}</td>
                                 @endif
-
-
                             </tr>
                         @endfor
                         </tbody>
@@ -178,9 +182,9 @@
                             {{ $most_played[$i]->plays }}
                         </td>
                         <td>
-                            <img src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $most_played[$i]->beatmapset_id  }}"
-                                 alt="thumbnail"/>
+
                             <a href="/beatmapsets/{{ $most_played[$i]->beatmapset_id }}" style=" vertical-align: top;">
+                                <img src="{{ env("WAFFLE_BANCHO_WEB_URL") . "/mt/" . $most_played[$i]->beatmapset_id  }}" alt="thumbnail" class="most-played-thumbnail"/>
                                 {{ $most_played[$i]->artist . " - " . $most_played[$i]->title }}
                             </a>
                         </td>
