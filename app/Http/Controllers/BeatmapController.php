@@ -45,7 +45,7 @@ class BeatmapController extends Controller {
 
         $difficulties = Beatmap::where('beatmaps.beatmapset_id', $setId)->leftJoin('osu_beatmap_difficulty', function($q) {
             $q->on('osu_beatmap_difficulty.beatmap_id', '=', 'beatmaps.beatmap_id');
-        })->groupBy('beatmaps.beatmap_id')->get()->reverse()->values();
+        })->groupBy('beatmaps.beatmap_id')->orderBy('eyup_stars', 'asc')->get()->values();
 
         if(count($difficulties) == 0) {
             return '404';
@@ -66,11 +66,24 @@ class BeatmapController extends Controller {
             $q->on('users.user_id', '=', 'beatmap_favourites.user_id');
         })->get(['username', 'users.user_id']);
 
+
+        $sortedDiffs = [];
+
+        //Sort by mode
+        for($mode = 0; $mode != 4; $mode++) {
+            for($i = 0; $i != count($difficulties); $i++) {
+                if($difficulties[$i]->playmode == $mode) {
+                    $sortedDiffs[] = $difficulties[$i];
+                }
+            }
+        }
+
+
         return view('beatmap_info', [
             "user" => $user,
             "beatmapset" => $beatmapset,
             "currentDiff" => $currentDifficulty,
-            "difficulties" => $difficulties,
+            "difficulties" => $sortedDiffs,
             "favourites" => $favourites
         ]);
     }

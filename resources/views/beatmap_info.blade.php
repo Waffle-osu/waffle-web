@@ -24,14 +24,12 @@
                 @for($i = 0; $i != count($difficulties); $i++)
                     @php($current = $difficulties[$i])
 
+
+
                     <li class="difficulty-tab">
                         <a href="/beatmapsets/{{ $current->beatmapset_id }}/{{ $current->beatmap_id }}">
-                            <x-difficulty-icon eyupStars="{{ $current->eyup_stars }}" mode="{{ $current->playmode }}"
-                                               class="difficulty-icon"/>
-
-                            <p style="display: inline-block; vertical-align: middle">
-                                {{ $current->version  }}
-                            </p>
+                            <x-difficulty-icon eyupStars="{{ $current->eyup_stars }}" mode="{{ $current->playmode }}" class="difficulty-icon"/>
+                            <p style="display: inline-block; vertical-align: middle"> {{ $current->version  }} </p>
                         </a>
                     </li>
                 @endfor
