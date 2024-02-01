@@ -40,6 +40,7 @@ Route::controller(RedirectController::class)->group(function() {
 Route::controller(BeatmapController::class)->group(function() {
     Route::get('/beatmapsets/{setId}', 'showScores');
     Route::get('/beatmapsets/{setId}/{beatmapId}', 'showScores');
+    Route::get('/beatmapsets/{setId}/{beatmapId}/{mode}', 'showScores');
 });
 
 Route::middleware('auth')->group(function() {

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Beatmap;
 use App\Models\BeatmapFavourites;
 use App\Models\BeatmapSet;
+use App\Models\Score;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BeatmapController extends Controller {
     public function favourite(string $setId) {
@@ -28,10 +31,6 @@ class BeatmapController extends Controller {
         ]);
 
         return back();
-    }
-
-    private function getDifficultyInfo(string $beatmapId) {
-
     }
 
     public function showScores(string $setId, string $beatmapId = '', string $mode = '') {
@@ -70,9 +69,9 @@ class BeatmapController extends Controller {
         $sortedDiffs = [];
 
         //Sort by mode
-        for($mode = 0; $mode != 4; $mode++) {
+        for($sortMode = 0; $sortMode != 4; $sortMode++) {
             for($i = 0; $i != count($difficulties); $i++) {
-                if($difficulties[$i]->playmode == $mode) {
+                if($difficulties[$i]->playmode == $sortMode) {
                     $sortedDiffs[] = $difficulties[$i];
                 }
             }
@@ -80,17 +79,25 @@ class BeatmapController extends Controller {
 
         $actualMode = $mode;
 
+        if($actualMode == ''){
+            $actualMode = 0;
+        }
+
         //Don't allow stuff like osu!standard leaderboards on taiko maps
-        if($currentDifficulty->playmode != $mode) {
+        if($currentDifficulty->playmode != 0 && $currentDifficulty->playmode != $mode) {
             $actualMode = $currentDifficulty->playmode;
         }
+
+        $scores = Score::GetBeatmapLeaderboards($currentDifficulty->beatmap_id, $actualMode);
 
         return view('beatmap_info', [
             "user" => $user,
             "beatmapset" => $beatmapset,
             "currentDiff" => $currentDifficulty,
             "difficulties" => $sortedDiffs,
-            "favourites" => $favourites
+            "favourites" => $favourites,
+            "scores" => $scores,
+            "currentMode" => $actualMode
         ]);
     }
 }

@@ -561,14 +561,19 @@ table.result-table tr:hover td {
     background-color: white;
 }
 
-.difficulty-tabs a {
+.difficulty-tab a {
     color: #5e5e5e;
     display: block;
     width: auto;
     text-decoration: none;
+    text-decoration: none;
     background: #fbd6d6;
     margin: -1px;
     padding: 0px 10px 0px 10px;
+}
+
+.difficulty-tab-active a {
+    background: #f7b8b8;
 }
 
 .difficulty-tabs .difficulty-icon {
@@ -591,4 +596,11 @@ table.result-table tr:hover td {
     padding: 5px 5px 5px 5px;
     height: 126px;
     overflow: auto;
+}
+
+.post-thumbnail {
+    float: left;
+    padding: 3px;
+    width: 160px;
+    height: 120px;
 }

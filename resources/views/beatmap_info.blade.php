@@ -23,8 +23,9 @@
             <ul style="list-style: none; margin: 0; padding: 0; display: block">
                 @for($i = 0; $i != count($difficulties); $i++)
                     @php($current = $difficulties[$i])
+                    @php($tabClass = $difficulties[$i]->beatmap_id == $currentDiff->beatmap_id ? "difficulty-tab-active" : "")
 
-                    <li class="difficulty-tab">
+                    <li class="difficulty-tab {{ $tabClass }}">
                         <a href="/beatmapsets/{{ $current->beatmapset_id }}/{{ $current->beatmap_id }}">
                             <x-difficulty-icon eyupStars="{{ $current->eyup_stars }}" mode="{{ $current->playmode }}" class="difficulty-icon"/>
                             <p style="display: inline-block; vertical-align: middle"> {{ $current->version  }} </p>
@@ -264,6 +265,24 @@
             <p class="heading-text">Song Ranking</p>
 
             <br/>
+
+            @php($modeNames = ["osu! Standard", "Taiko", "Catch the Beat"])
+
+            <div class="difficulty-tabs"
+                 style="width: 100%; border-bottom: solid #CF4D37 1px; height: 25px; margin-left: -9px">
+                <ul style="list-style: none; margin: 0; padding: 0; display: block">
+                    @for($i = 0; $i != count($modeNames); $i++)
+                        @php($current = $modeNames[$i])
+                        @php($tabClass = $currentMode == $i ? "difficulty-tab-active" : "")
+
+                        <li class="difficulty-tab {{ $tabClass }}">
+                            <a href="/beatmapsets/{{ $beatmapset->beatmapset_id }}/{{$currentDiff->beatmap_id}}/{{$i}}"> {{ $current }}</a>
+                        </li>
+                    @endfor
+                </ul>
+            </div>
+
+            
         </div>
     </div>
 @endsection
